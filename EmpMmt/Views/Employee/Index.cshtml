@@ -1,0 +1,942 @@
+﻿@model List<EmpMgmt.Models.Employee>
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Employee Management</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+
+ 
+                    body {
+                    font-family: Arial, sans-serif;
+                    background-color: white;
+                    margin: 0;
+                    padding: 20px;
+                    }
+
+                    .container {
+                    width: 90%;
+                    margin: auto;
+                    }
+
+                    h2 {
+                    font-size: 22px;
+                    margin-bottom: 10px;
+                    border-bottom: 2px solid #999;
+                    display: inline-block;
+                    padding-bottom: 5px;
+                    }
+
+                    .form-box {
+                    width: 600px;
+                    border: 1px solid #ccc;
+                    padding: 25px;
+                    margin-bottom: 40px;
+
+          
+
+                    background-color: #fff;
+                    }
+
+                    .form-row {
+                    margin-bottom: 18px;
+                    }
+
+                    .form-row label {
+                    display: inline-block;
+                    width: 120px;
+                    font-weight: bold;
+                    }
+
+                    input[type="text"],
+                    input[type="email"] {
+                    width: 350px;
+                    padding: 9px;
+                    border: 1px solid #777;
+                    }
+
+                    input[type="file"] {
+                    width: 350px;
+                    padding: 5px;
+                    }
+
+                    .qualification {
+                    display: inline-block;
+                    }
+
+                    .qualification label {
+                    width: auto;
+                    font-weight: normal;
+                    margin-right: 10px;
+                    }
+
+                    .preview-image {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: cover;
+                    display: block;
+                    margin-top: 10px;
+                    border: 1px solid #aaa;
+                    }
+
+                    button {
+                    padding: 10px 20px;
+                    border: none;
+                    cursor: pointer;
+                    margin-right: 10px;
+                    border-radius: 5px;
+                    }
+
+            
+
+ 
+                    .save-btn {
+                    background-color: #7ac943;
+                    color: white;
+                    }
+
+                    .update-btn {
+                    background-color: #7ac943;
+                    color: white;
+                    }
+
+                    .cancel-btn {
+                    background-color: #e9966b;
+                    color: white;
+                    }
+
+                    .edit-btn {
+                    background-color: #62c462;
+                    color: white;
+                    padding: 7px 15px;
+                    }
+
+                    .delete-btn {
+                    background-color: #e74c3c;
+                    color: white;
+                    padding: 7px 15px;
+                    }
+
+                    .remove-image-btn {
+                    background-color: #e74c3c;
+                    color: white;
+                    padding: 6px 10px;
+                    margin-top: 5px;
+                    }
+
+                    table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 15px;
+                    }
+
+                    th {
+                    background-color: #55c3d0;
+                    color: white;
+                    padding: 12px;
+                    text-align: left;
+                    }
+
+                    td {
+                    padding: 10px;
+                    border: 1px solid #ddd;
+
+            
+
+                    }
+
+                    .employee-image {
+                    width: 70px;
+                    height: 70px;
+                    object-fit: cover;
+                    }
+
+                    .no-image {
+                    color: #555;
+                    }
+
+                    .actions {
+                    white-space: nowrap;
+                    }
+
+                    #editSection {
+                    display: none;
+                    }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        //ADD EMPLOYEE
+
+        <div id="addSection">
+
+            <h2>ADD EMPLOYEE</h2>
+
+            <div class="form-box">
+
+                <form id="addEmployeeForm"
+                      enctype="multipart/form-data">
+
+                    <div class="form-row">
+
+                        <label>Name:</label>
+
+                        <input type="text"
+                               id="addName"
+                               name="Name"
+                               placeholder="Enter Name"
+                               required />
+
+                    </div>
+
+ 
+                    
+
+ 
+                    <div class="form-row">
+
+                        <label>Email:</label>
+
+                        <input type="email"
+                               id="addEmail"
+                               name="Email"
+                               placeholder="Enter your Email"
+                               required />
+
+                    </div>
+
+ 
+                    <div class="form-row">
+
+                        <label>Profile:</label>
+
+                        <input type="file"
+                               id="addPicture"
+                               name="PictureFile"
+                               accept="image/*" />
+
+                    </div>
+
+ 
+                    <div class="form-row">
+
+                        <label>Qualification:</label>
+
+                        <div class="qualification">
+
+                            <label>
+                                <input type="checkbox"
+                                       name="Qualifications"
+                                       value="Diploma" />
+                                Diploma
+                            </label>
+
+                            <label>
+                                <input type="checkbox"
+                                       name="Qualifications"
+                                       value="Degree" />
+                                Degree
+                            </label>
+
+                            <label>
+                                <input type="checkbox"
+                                       name="Qualifications"
+                                       value="Master Degree" />
+                                Master Degree
+
+                                
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+ 
+                    <button type="submit"
+                            class="save-btn">
+                        SAVE
+                    </button>
+
+                    <button type="button"
+                            class="cancel-btn"
+                            onclick="clearAddForm()">
+                        CANCEL
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        // EDIT EMPLOYEE
+
+        <div id="editSection">
+
+            <h2>EDIT EMPLOYEE</h2>
+
+            <div class="form-box">
+
+                <form id="editEmployeeForm"
+                      enctype="multipart/form-data">
+
+                    <input type="hidden"
+                           id="editId"
+                           name="ID" />
+
+ 
+                    <div class="form-row">
+
+                        <label>Name:</label>
+
+                        <input type="text"
+                               id="editName"
+                               name="Name"
+                               placeholder="Enter Name"
+                               required />
+
+                    </div>
+
+                
+
+ 
+ 
+                    <div class="form-row">
+
+                        <label>Email:</label>
+
+                        <input type="email"
+                               id="editEmail"
+                               name="Email"
+                               placeholder="Enter your Email"
+                               required />
+
+                    </div>
+
+ 
+                    <div class="form-row">
+
+                        <label>Profile:</label>
+
+                        <input type="file"
+                               id="editPicture"
+                               name="PictureFile"
+                               accept="image/*" />
+
+                        <div id="currentImageArea"></div>
+
+                    </div>
+
+ 
+                    <div class="form-row">
+
+                        <label>Qualification:</label>
+
+                        <div class="qualification">
+
+                            <label>
+                                <input type="checkbox"
+                                       id="editDiploma"
+                                       name="Qualifications"
+                                       value="Diploma" />
+                                Diploma
+                            </label>
+
+                            <label>
+                                <input type="checkbox"
+                                       id="editDegree"
+                                       name="Qualifications"
+                                       value="Degree" />
+                                Degree
+                            </label>
+
+ 
+                           
+
+                            <label>
+                                <input type="checkbox"
+                                       id="editMaster"
+                                       name="Qualifications"
+                                       value="Master Degree" />
+                                Master Degree
+                            </label>
+
+                        </div>
+
+                    </div>
+
+ 
+                    <button type="submit"
+                            class="update-btn">
+                        UPDATE
+                    </button>
+
+                    <button type="button"
+                            class="cancel-btn"
+                            onclick="cancelEdit()">
+                        CANCEL
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+ 
+        //MANAGE EMPLOYEE
+
+        <h2>MANAGE EMPLOYEE</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Sl no</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Profile</th>
+
+                    <th>Qualification</th>
+
+ 
+                    
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+ 
+            <tbody id="employeeTableBody">
+
+                @if (Model != null && Model.Count > 0)
+                {
+                    int slNo = 1;
+
+                    foreach (var employee in Model)
+                    {
+                        <tr id="employeeRow_@employee.ID">
+
+                            <td>
+                                @slNo
+                            </td>
+
+                            <td>
+                                @employee.Name
+                            </td>
+
+                            <td>
+                                @employee.Email
+                            </td>
+
+ 
+                            <td>
+
+                                @if (!string.IsNullOrEmpty(employee.Picture))
+                                {
+                                    <img src="@employee.Picture"
+                                         class="employee-image"
+                                         alt="Employee Image" />
+
+                                    <br />
+
+                                    <button type="button"
+                                            class="remove-image-btn"
+                                            onclick="removeImage(@employee.ID)">
+                                        Remove Image
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="no-image">
+                                        No image
+                                    </span>
+
+                                        
+
+}
+
+                            </td>
+
+ 
+                            <td>
+                                @employee.Qualification
+                            </td>
+
+ 
+                            <td class="actions">
+
+                                <button type="button"
+                                        class="edit-btn"
+                                        onclick="editEmployee(
+                                    @employee.ID,
+                                    '@Html.Raw((employee.Name ?? "").Replace("'", "\\'"))',
+                                    '@Html.Raw((employee.Email ?? "").Replace("'", "\\'"))',
+                                    '@Html.Raw((employee.Picture ?? "").Replace("'", "\\'"))',
+                                    '@Html.Raw((employee.Qualification ?? "").Replace("'", "\\'"))'
+                                    )">
+                                    Edit
+                                </button>
+
+ 
+                                <button type="button"
+                                        class="delete-btn"
+                                        onclick="deleteEmployee(@employee.ID)">
+                                    Delete
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        slNo++;
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="6">
+                            No employees found.
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+ 
+           
+
+        </table>
+
+    </div>
+
+ 
+    <script>
+
+ 
+         
+            // ADD EMPLOYEE
+
+       
+                    $("#addEmployeeForm").submit(function (e) {
+
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+
+                    url: '/Employee/Save',
+
+                    type: 'POST',
+
+                    data: formData,
+
+                    processData: false,
+
+                    contentType: false,
+
+                    success: function (response) {
+
+                    if (response.success) {
+
+                    alert("Employee saved successfully.");
+
+                    location.reload();
+
+                    }
+                    else {
+
+                    alert(response.message || "Unable to save employee.");
+
+                    }
+
+                    },
+
+                    error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert("Something went wrong while saving employee.");
+
+     
+
+ 
+                    }
+
+                    });
+
+                    });
+
+ 
+ 
+             // EDIT EMPLOYEE
+
+                    function editEmployee(id, name, email, picture, qualification) {
+
+                    $("#addSection").hide();
+
+                    $("#editSection").show();
+
+                    $("#editId").val(id);
+
+                    $("#editName").val(name);
+
+                    $("#editEmail").val(email);
+
+ 
+                    // Remove all checkboxes first
+
+                    $("#editDiploma").prop("checked", false);
+
+                    $("#editDegree").prop("checked", false);
+
+                    $("#editMaster").prop("checked", false);
+
+ 
+                    // Set qualification checkboxes
+
+                    if (qualification) {
+
+                    if (qualification.includes("Diploma")) {
+
+                    $("#editDiploma").prop("checked", true);
+
+                    }
+
+                    if (qualification.includes("Degree") &&
+                    !qualification.includes("Master Degree")) {
+
+                    $("#editDegree").prop("checked", true);
+
+                    }
+
+                    if (qualification.includes("Master Degree")) {
+
+            
+
+ 
+                    $("#editMaster").prop("checked", true);
+
+                    }
+
+                    }
+
+ 
+                    // Display current image
+
+                    if (picture && picture !== "") {
+
+                    $("#currentImageArea").html(
+
+                    '<img src="' + picture + '" ' +
+                    'class="preview-image" />' +
+
+                    '<br>' +
+
+                    '<button type="button" ' +
+                    'class="remove-image-btn" ' +
+                    'onclick="removeImageFromEdit(' + id + ')">' +
+                    'Remove Image' +
+                    '</button>'
+
+                    );
+
+                    }
+                    else {
+
+                    $("#currentImageArea").html(
+                    '<span class="no-image">No image</span>'
+                    );
+
+                    }
+
+                    window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                    });
+
+                    }
+
+ 
+                    // UPDATE EMPLOYEE
+
+                    $("#editEmployeeForm").submit(function (e) {
+
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+          
+
+ 
+                    $.ajax({
+
+                    url: '/Employee/Update',
+
+                    type: 'POST',
+
+                    data: formData,
+
+                    processData: false,
+
+                    contentType: false,
+
+                    success: function (response) {
+
+                    if (response.success) {
+
+                    alert("Employee updated successfully.");
+
+                    location.reload();
+
+                    }
+                    else {
+
+                    alert(response.message || "Unable to update employee.");
+
+                    }
+
+                    },
+
+                    error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert("Something went wrong while updating employee.");
+
+                    }
+
+                    });
+
+                    });
+
+ 
+                    // DELETE EMPLOYEE
+
+         
+                    function deleteEmployee(id) {
+
+                    if (!confirm("Are you sure you want to delete this employee?")) {
+
+                    return;
+
+           
+
+ 
+                    }
+
+ 
+                    $.ajax({
+
+                    url: '/Employee/Delete',
+
+                    type: 'POST',
+
+                    data: {
+                    id: id
+                    },
+
+                    success: function (response) {
+
+                    if (response.success) {
+
+                    alert("Employee deleted successfully.");
+
+                    $("#employeeRow_" + id).remove();
+
+                    }
+                    else {
+
+                    alert(response.message || "Unable to delete employee.");
+
+                    }
+
+                    },
+
+                    error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert("Something went wrong while deleting employee.");
+
+                    }
+
+                    });
+
+                    }
+
+ 
+ 
+         
+        
+ 
+             // REMOVE IMAGE
+
+                    function removeImage(id) {
+
+            
+
+ 
+                    if (!confirm("Are you sure you want to remove this image?")) {
+
+                    return;
+
+                    }
+
+ 
+                    $.ajax({
+
+                    url: '/Employee/RemoveImage',
+
+                    type: 'POST',
+
+                    data: {
+                    id: id
+                    },
+
+                    success: function (response) {
+
+                    if (response.success) {
+
+                    alert("Image removed successfully.");
+
+                    location.reload();
+
+                    }
+                    else {
+
+                    alert(response.message || "Unable to remove image.");
+
+                    }
+
+                    },
+
+                    error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert("Something went wrong while removing image.");
+
+                    }
+
+                    });
+
+                    }
+
+ 
+ 
+       
+              // REMOVE IMAGE FROM EDIT SCREEN
+
+          
+
+ 
+         
+                    function removeImageFromEdit(id) {
+
+                    if (!confirm("Remove this employee image?")) {
+
+                    return;
+
+                    }
+
+ 
+                    $.ajax({
+
+                    url: '/Employee/RemoveImage',
+
+                    type: 'POST',
+
+                    data: {
+                    id: id
+                    },
+
+                    success: function (response) {
+
+                    if (response.success) {
+
+                    alert("Image removed successfully.");
+
+                    $("#currentImageArea").html(
+                    '<span class="no-image">No image</span>'
+                    );
+
+                    }
+                    else {
+
+                    alert(response.message || "Unable to remove image.");
+
+                    }
+
+                    },
+
+                    error: function (xhr) {
+
+                    console.log(xhr.responseText);
+
+                    alert("Something went wrong while removing image.");
+
+                    }
+
+                    });
+
+                    }
+
+           
+
+ 
+ 
+                    // CANCEL EDIT
+
+                    function cancelEdit() {
+
+                    $("#editSection").hide();
+
+                    $("#addSection").show();
+
+                    $("#editEmployeeForm")[0].reset();
+
+                    $("#currentImageArea").html("");
+
+                    }
+
+ 
+                    // CLEAR ADD FORM
+
+                    function clearAddForm() {
+
+                    $("#addEmployeeForm")[0].reset();
+
+                    }
+
+    </script>
+
+</body>
+</html>
+
+ 
