@@ -62,7 +62,7 @@ interface DemoUser {
   staff_profile?: DemoStaffProfile;
 }
 
-interface DemoLeave extends Omit<LeaveApplication, 'applicant' | 'approver' | 'documents'> {}
+type DemoLeave = Omit<LeaveApplication, 'applicant' | 'approver' | 'documents'>;
 
 interface DemoState {
   departments: Department[];
@@ -673,6 +673,11 @@ export function createDemoBackend(): Backend {
       if (user.role === 'management') {
         throw new BackendError('Management accounts cannot create leave applications.');
       }
+      if (!asDraft && input.category === 'event') {
+        throw new BackendError(
+          'Save the event leave as a draft first, upload the brochure, participation report, certificate and photos, then submit.',
+        );
+      }
       const id = makeId('leave');
       const approver = resolveApprover(state, user);
       const totalDays =
@@ -707,11 +712,6 @@ export function createDemoBackend(): Backend {
       state.leaves.unshift(row);
 
       if (!asDraft) {
-        if (row.category === 'event') {
-          throw new BackendError(
-            'Event leave requires the brochure, participation report (PDF), certificate and event photos. Save as draft, upload them, then submit.',
-          );
-        }
         notify(
           state,
           approver,
